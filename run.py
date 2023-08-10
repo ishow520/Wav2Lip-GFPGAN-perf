@@ -118,7 +118,7 @@ def merge_audio_and_video(video_path, audio_path, output_path):
 
 
 userAudioPathList = os.listdir(os.path.join("inputs", userPath, "source_audio"))
-
+# 开始渲染视频
 for sourceAudioName in userAudioPathList:
     title = sourceAudioName.split(".")[-2]
     userVideoPathList = os.listdir(os.path.join("inputs", userPath, "source_video"))
@@ -154,3 +154,41 @@ for sourceAudioName in userAudioPathList:
 
     finalProcessedOutputVideo = os.path.join(processedVideoOutputPath, 'final_with_audio.mp4')
     merge_audio_and_video(concatedVideoOutputPath, inputAudioPath, finalProcessedOutputVideo)
+
+
+def video_process(audio_path, video_path, output_path):
+    title = audio_path.split(".")[-2]
+    # 输出环境处理
+    outputPath = os.path.join(basePath, "data/video/results", title)
+    if not os.path.exists(outputPath):
+        os.makedirs(outputPath)
+    # 音频地址
+    inputAudioPath = os.path.join(basePath, audio_path)
+    # 视频输入地址
+    inputVideoPath = os.path.join(basePath, video_path)
+    # 优化后的地址
+    lipSyncedOutputPath = os.path.join(basePath, output_path)
+    # 通过wav2lip 生成视频
+    process_video_with_wav2lip(inputVideoPath, inputAudioPath, lipSyncedOutputPath)
+
+    # 后面步骤是--- 进行超分处理
+    # unProcessedFramesFolderPath = os.path.join(outputPath, 'frames')
+    # if not os.path.exists(unProcessedFramesFolderPath):
+    #     os.makedirs(unProcessedFramesFolderPath)
+
+    # fps = extract_frames_from_video(lipSyncedOutputPath, unProcessedFramesFolderPath)
+
+    # restoredFramesPath = os.path.join(outputPath, 'restored_imgs')
+    # if not os.path.exists(restoredFramesPath):
+    #     os.makedirs(restoredFramesPath)
+
+    # process_images_with_gfpgan(unProcessedFramesFolderPath, restoredFramesPath)
+
+    # processedVideoOutputPath = outputPath
+    # batch = create_videos_from_frames(restoredFramesPath, processedVideoOutputPath, fps, batch_size=600)
+    # concatTextFilePath = os.path.join(outputPath, "concat.txt")
+    # concatedVideoOutputPath = os.path.join(outputPath, "concated_output.mp4")
+    # concatenate_videos(outputPath, batch, concatTextFilePath, concatedVideoOutputPath)
+
+    # finalProcessedOutputVideo = os.path.join(processedVideoOutputPath, 'final_with_audio.mp4')
+    # merge_audio_and_video(concatedVideoOutputPath, inputAudioPath, finalProcessedOutputVideo)
