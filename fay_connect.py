@@ -54,10 +54,9 @@ def connet_fay():
             else:
                 audio_path = 'data/audio/aud_%d.wav' % num
                 audio_process(audio_path)
-                audio_path_eo = 'data/audio/aud_%d_eo.npy' % num
                 video_path = 'data/input/demo.mp4' 
                 output_path = 'data/video/results/output_%d.mp4' % num
-                generate_video(audio_path, audio_path_eo, video_path, output_path)
+                generate_video(audio_path, video_path, output_path)
                 video_list.append({"video" : output_path, "audio" : new_path})
                 video_cache[audio_hash] = output_path
 
